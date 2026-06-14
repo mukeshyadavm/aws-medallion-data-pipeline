@@ -6,7 +6,7 @@
 - Athena DDL: `sql/athena_star_schema_ddl.sql`
 - Validation SQL: `sql/athena_validation_queries.sql`
 - ER diagram: `docs/star_schema_er_diagram.md`
-- Target S3 base path: `s3://mukesh-bucket420/StarSchema/`
+- Target S3 base path: `s3://<bucket>/StarSchema/`
 
 ## Mandatory Issues Resolved
 
@@ -20,7 +20,7 @@
    - ISO weekday number now uses `dayofweek` arithmetic.
 
 3. Star schema output location corrected.
-   - Glue, DDL, validation, and docs now target `s3://mukesh-bucket420/StarSchema/`.
+   - Glue, DDL, validation, and docs now target `s3://<bucket>/StarSchema/`.
 
 4. Missing dimensions added.
    - `dim_ingestion_batch`
@@ -81,13 +81,13 @@ Recommendation:
 - Upload the TLC taxi zone lookup CSV to S3, for example:
 
 ```text
-s3://mukesh-bucket420/Reference/taxi_zone_lookup.csv
+s3://<bucket>/Reference/taxi_zone_lookup.csv
 ```
 
 - Pass:
 
 ```text
---LOCATION_LOOKUP_PATH=s3://mukesh-bucket420/Reference/taxi_zone_lookup.csv
+--LOCATION_LOOKUP_PATH=s3://your-bucket/Reference/taxi_zone_lookup.csv
 ```
 
 Do this before using maps, borough reporting, zone reporting, or route analytics in QuickSight.

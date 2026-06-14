@@ -5,13 +5,13 @@
 Observed from AWS Glue and S3 on 2026-06-14:
 
 - Glue database: `nyc_taxi_db`
-- Bronze table: `bronze`, stored at `s3://mukesh-bucket420/Bronze/`
-- Silver table: `silver_silver`, stored at `s3://mukesh-bucket420/Silver/`
+- Bronze table: `bronze`, stored at `s3://<bucket>/Bronze/`
+- Silver table: `silver_silver`, stored at `s3://<bucket>/Silver/`
 - Gold tables:
-  - `gold_daily_revenue` at `s3://mukesh-bucket420/Gold/daily_revenue/`
-  - `gold_vendor_revenue` at `s3://mukesh-bucket420/Gold/vendor_revenue/`
-  - `gold_payment_type_analysis` at `s3://mukesh-bucket420/Gold/payment_type_analysis/`
-  - `gold_passenger_analysis` at `s3://mukesh-bucket420/Gold/passenger_analysis/`
+  - `gold_daily_revenue` at `s3://<bucket>/Gold/daily_revenue/`
+  - `gold_vendor_revenue` at `s3://<bucket>/Gold/vendor_revenue/`
+  - `gold_payment_type_analysis` at `s3://<bucket>/Gold/payment_type_analysis/`
+  - `gold_passenger_analysis` at `s3://<bucket>/Gold/passenger_analysis/`
 - S3 root prefixes: `Bronze/`, `Silver/`, `Gold/`, `Documentation/`, `athena-results/`, `scripts/`
 - Bronze contains one file: `yellow_tripdata_2025-01.parquet`
 - Bronze record count from crawler metadata: about 3.48M rows
@@ -499,21 +499,21 @@ Build from existing Gold:
 Recommended S3 layout:
 
 ```text
-s3://mukesh-bucket420/StarSchema/dim_date/
-s3://mukesh-bucket420/StarSchema/dim_time/
-s3://mukesh-bucket420/StarSchema/dim_vendor/
-s3://mukesh-bucket420/StarSchema/dim_payment_type/
-s3://mukesh-bucket420/StarSchema/dim_rate_code/
-s3://mukesh-bucket420/StarSchema/dim_location/
-s3://mukesh-bucket420/StarSchema/dim_passenger_count/
-s3://mukesh-bucket420/StarSchema/dim_trip_flags/
-s3://mukesh-bucket420/StarSchema/dim_trip_quality/
-s3://mukesh-bucket420/StarSchema/dim_ingestion_batch/
-s3://mukesh-bucket420/StarSchema/fact_trip/pickup_year=YYYY/pickup_month=MM/
-s3://mukesh-bucket420/StarSchema/fact_daily_trip_summary/pickup_year=YYYY/
-s3://mukesh-bucket420/StarSchema/fact_vendor_daily_summary/pickup_year=YYYY/pickup_month=MM/
-s3://mukesh-bucket420/StarSchema/fact_payment_daily_summary/pickup_year=YYYY/pickup_month=MM/
-s3://mukesh-bucket420/StarSchema/fact_location_daily_summary/pickup_year=YYYY/pickup_month=MM/
+s3://<bucket>/StarSchema/dim_date/
+s3://<bucket>/StarSchema/dim_time/
+s3://<bucket>/StarSchema/dim_vendor/
+s3://<bucket>/StarSchema/dim_payment_type/
+s3://<bucket>/StarSchema/dim_rate_code/
+s3://<bucket>/StarSchema/dim_location/
+s3://<bucket>/StarSchema/dim_passenger_count/
+s3://<bucket>/StarSchema/dim_trip_flags/
+s3://<bucket>/StarSchema/dim_trip_quality/
+s3://<bucket>/StarSchema/dim_ingestion_batch/
+s3://<bucket>/StarSchema/fact_trip/pickup_year=YYYY/pickup_month=MM/
+s3://<bucket>/StarSchema/fact_daily_trip_summary/pickup_year=YYYY/
+s3://<bucket>/StarSchema/fact_vendor_daily_summary/pickup_year=YYYY/pickup_month=MM/
+s3://<bucket>/StarSchema/fact_payment_daily_summary/pickup_year=YYYY/pickup_month=MM/
+s3://<bucket>/StarSchema/fact_location_daily_summary/pickup_year=YYYY/pickup_month=MM/
 ```
 
 Surrogate key strategy:
@@ -586,10 +586,10 @@ BI modeling notes:
 
 Recommended crawlers:
 
-- `nyc_taxi_bronze_crawler`: crawl only `s3://mukesh-bucket420/Bronze/`
-- `nyc_taxi_silver_crawler`: crawl only `s3://mukesh-bucket420/Silver/`
-- `nyc_taxi_star_schema_dimensions_crawler`: crawl `s3://mukesh-bucket420/StarSchema/dim_*/`
-- `nyc_taxi_star_schema_facts_crawler`: crawl `s3://mukesh-bucket420/StarSchema/fact_*/`
+- `nyc_taxi_bronze_crawler`: crawl only `s3://<bucket>/Bronze/`
+- `nyc_taxi_silver_crawler`: crawl only `s3://<bucket>/Silver/`
+- `nyc_taxi_star_schema_dimensions_crawler`: crawl `s3://<bucket>/StarSchema/dim_*/`
+- `nyc_taxi_star_schema_facts_crawler`: crawl `s3://<bucket>/StarSchema/fact_*/`
 
 Crawler settings:
 

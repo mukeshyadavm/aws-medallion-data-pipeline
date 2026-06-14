@@ -12,7 +12,6 @@ from pyspark.storagelevel import StorageLevel
 
 DEFAULT_DATABASE = "nyc_taxi_db"
 DEFAULT_SILVER_TABLE = "silver_silver"
-DEFAULT_OUTPUT_BASE = "s3://mukesh-bucket420/StarSchema"
 DEFAULT_DATE_START = "2020-01-01"
 DEFAULT_DATE_END = "2035-12-31"
 
@@ -24,6 +23,12 @@ def get_arg(name, default_value):
     return default_value
 
 
+def validate_s3_path(name, value):
+    if not value or not value.startswith("s3://") or "<" in value or ">" in value:
+        raise ValueError(f"--{name} must be a valid S3 path, for example s3://your-bucket/StarSchema/")
+    return value.rstrip("/")
+
+
 def write_parquet(df, table_name, partition_cols=None, mode="overwrite"):
     writer = df.write.mode(mode).format("parquet")
     if partition_cols:
@@ -31,11 +36,11 @@ def write_parquet(df, table_name, partition_cols=None, mode="overwrite"):
     writer.save(f"{output_base}/{table_name}/")
 
 
-args = getResolvedOptions(sys.argv, ["JOB_NAME"])
+args = getResolvedOptions(sys.argv, ["JOB_NAME", "OUTPUT_BASE"])
 
 database_name = get_arg("DATABASE_NAME", DEFAULT_DATABASE)
 silver_table_name = get_arg("SILVER_TABLE_NAME", DEFAULT_SILVER_TABLE)
-output_base = get_arg("OUTPUT_BASE", DEFAULT_OUTPUT_BASE).rstrip("/")
+output_base = validate_s3_path("OUTPUT_BASE", args["OUTPUT_BASE"])
 date_start = get_arg("DATE_START", DEFAULT_DATE_START)
 date_end = get_arg("DATE_END", DEFAULT_DATE_END)
 location_lookup_path = get_arg("LOCATION_LOOKUP_PATH", "")

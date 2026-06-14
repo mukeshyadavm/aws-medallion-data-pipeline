@@ -3,7 +3,7 @@
 Target base path:
 
 ```text
-s3://mukesh-bucket420/StarSchema/
+s3://<bucket>/StarSchema/
 ```
 
 ## Complete ER Diagram
@@ -105,7 +105,7 @@ Summary fact grains are intentionally derived from `fact_trip`; they are not ind
 
 Resolved mandatory items:
 
-- Glue output base moved to `s3://mukesh-bucket420/StarSchema/`.
+- Glue output base moved to `s3://<bucket>/StarSchema/`.
 - Unsupported Spark `date_format(..., "u")` pattern removed.
 - Unknown dimension rows added for operational dimensions.
 - `dim_ingestion_batch` added for lineage and batch audit.

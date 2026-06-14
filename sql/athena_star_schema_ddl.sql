@@ -21,7 +21,7 @@ CREATE EXTERNAL TABLE dim_date (
     year_month STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_date/';
+LOCATION 's3://<bucket>/StarSchema/dim_date/';
 
 DROP TABLE IF EXISTS dim_time;
 CREATE EXTERNAL TABLE dim_time (
@@ -32,7 +32,7 @@ CREATE EXTERNAL TABLE dim_time (
     daypart STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_time/';
+LOCATION 's3://<bucket>/StarSchema/dim_time/';
 
 DROP TABLE IF EXISTS dim_vendor;
 CREATE EXTERNAL TABLE dim_vendor (
@@ -42,7 +42,7 @@ CREATE EXTERNAL TABLE dim_vendor (
     is_current BOOLEAN
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_vendor/';
+LOCATION 's3://<bucket>/StarSchema/dim_vendor/';
 
 DROP TABLE IF EXISTS dim_payment_type;
 CREATE EXTERNAL TABLE dim_payment_type (
@@ -51,7 +51,7 @@ CREATE EXTERNAL TABLE dim_payment_type (
     payment_type_description STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_payment_type/';
+LOCATION 's3://<bucket>/StarSchema/dim_payment_type/';
 
 DROP TABLE IF EXISTS dim_rate_code;
 CREATE EXTERNAL TABLE dim_rate_code (
@@ -60,7 +60,7 @@ CREATE EXTERNAL TABLE dim_rate_code (
     rate_code_description STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_rate_code/';
+LOCATION 's3://<bucket>/StarSchema/dim_rate_code/';
 
 DROP TABLE IF EXISTS dim_location;
 CREATE EXTERNAL TABLE dim_location (
@@ -71,7 +71,7 @@ CREATE EXTERNAL TABLE dim_location (
     service_zone STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_location/';
+LOCATION 's3://<bucket>/StarSchema/dim_location/';
 
 DROP TABLE IF EXISTS dim_passenger_count;
 CREATE EXTERNAL TABLE dim_passenger_count (
@@ -80,7 +80,7 @@ CREATE EXTERNAL TABLE dim_passenger_count (
     passenger_group STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_passenger_count/';
+LOCATION 's3://<bucket>/StarSchema/dim_passenger_count/';
 
 DROP TABLE IF EXISTS dim_trip_flags;
 CREATE EXTERNAL TABLE dim_trip_flags (
@@ -89,7 +89,7 @@ CREATE EXTERNAL TABLE dim_trip_flags (
     store_and_fwd_description STRING
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_trip_flags/';
+LOCATION 's3://<bucket>/StarSchema/dim_trip_flags/';
 
 DROP TABLE IF EXISTS dim_trip_quality;
 CREATE EXTERNAL TABLE dim_trip_quality (
@@ -101,7 +101,7 @@ CREATE EXTERNAL TABLE dim_trip_quality (
     is_high_amount BOOLEAN
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_trip_quality/';
+LOCATION 's3://<bucket>/StarSchema/dim_trip_quality/';
 
 DROP TABLE IF EXISTS dim_ingestion_batch;
 CREATE EXTERNAL TABLE dim_ingestion_batch (
@@ -120,7 +120,7 @@ CREATE EXTERNAL TABLE dim_ingestion_batch (
     rejected_record_count BIGINT
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/dim_ingestion_batch/';
+LOCATION 's3://<bucket>/StarSchema/dim_ingestion_batch/';
 
 DROP TABLE IF EXISTS fact_trip;
 CREATE EXTERNAL TABLE fact_trip (
@@ -164,7 +164,7 @@ PARTITIONED BY (
     pickup_month INT
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/fact_trip/';
+LOCATION 's3://<bucket>/StarSchema/fact_trip/';
 
 DROP TABLE IF EXISTS fact_daily_trip_summary;
 CREATE EXTERNAL TABLE fact_daily_trip_summary (
@@ -182,7 +182,7 @@ PARTITIONED BY (
     pickup_year INT
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/fact_daily_trip_summary/';
+LOCATION 's3://<bucket>/StarSchema/fact_daily_trip_summary/';
 
 DROP TABLE IF EXISTS fact_vendor_daily_summary;
 CREATE EXTERNAL TABLE fact_vendor_daily_summary (
@@ -199,7 +199,7 @@ PARTITIONED BY (
     pickup_month INT
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/fact_vendor_daily_summary/';
+LOCATION 's3://<bucket>/StarSchema/fact_vendor_daily_summary/';
 
 DROP TABLE IF EXISTS fact_payment_daily_summary;
 CREATE EXTERNAL TABLE fact_payment_daily_summary (
@@ -216,7 +216,7 @@ PARTITIONED BY (
     pickup_month INT
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/fact_payment_daily_summary/';
+LOCATION 's3://<bucket>/StarSchema/fact_payment_daily_summary/';
 
 DROP TABLE IF EXISTS fact_location_daily_summary;
 CREATE EXTERNAL TABLE fact_location_daily_summary (
@@ -234,7 +234,7 @@ PARTITIONED BY (
     pickup_month INT
 )
 STORED AS PARQUET
-LOCATION 's3://mukesh-bucket420/StarSchema/fact_location_daily_summary/';
+LOCATION 's3://<bucket>/StarSchema/fact_location_daily_summary/';
 
 MSCK REPAIR TABLE fact_trip;
 MSCK REPAIR TABLE fact_daily_trip_summary;

@@ -5,7 +5,7 @@
 1. Upload the Glue script:
 
 ```bash
-aws s3 cp glue_jobs/nyc_taxi_star_schema_glue.py s3://mukesh-bucket420/scripts/nyc_taxi_star_schema_glue.py
+aws s3 cp glue_jobs/nyc_taxi_star_schema_glue.py s3://<bucket>/scripts/nyc_taxi_star_schema_glue.py
 ```
 
 2. Create the Glue job:
@@ -17,17 +17,17 @@ aws glue create-job \
   --glue-version 4.0 \
   --worker-type G.1X \
   --number-of-workers 4 \
-  --command 'Name=glueetl,ScriptLocation=s3://mukesh-bucket420/scripts/nyc_taxi_star_schema_glue.py,PythonVersion=3' \
+  --command 'Name=glueetl,ScriptLocation=s3://<bucket>/scripts/nyc_taxi_star_schema_glue.py,PythonVersion=3' \
   --default-arguments '{
     "--job-language": "python",
     "--DATABASE_NAME": "nyc_taxi_db",
     "--SILVER_TABLE_NAME": "silver_silver",
-    "--OUTPUT_BASE": "s3://mukesh-bucket420/StarSchema",
+    "--OUTPUT_BASE": "s3://your-bucket/StarSchema/",
     "--LOCATION_LOOKUP_PATH": "",
     "--enable-metrics": "true",
     "--enable-continuous-cloudwatch-log": "true",
     "--enable-glue-datacatalog": "true",
-    "--TempDir": "s3://mukesh-bucket420/temp/glue/"
+    "--TempDir": "s3://<bucket>/temp/glue/"
   }'
 ```
 
@@ -46,10 +46,12 @@ aws glue get-job-runs --job-name nyc_taxi_gold_star_schema_job --max-results 5
 5. Create Athena external tables:
 
 ```bash
-aws s3 cp sql/athena_star_schema_ddl.sql s3://mukesh-bucket420/scripts/athena_star_schema_ddl.sql
+aws s3 cp sql/athena_star_schema_ddl.sql s3://<bucket>/scripts/athena_star_schema_ddl.sql
 ```
 
 Run `sql/athena_star_schema_ddl.sql` in Athena using database `nyc_taxi_db`.
+
+`--OUTPUT_BASE` is a required Glue job parameter. Replace `your-bucket` with the target S3 bucket before deployment.
 
 6. Validate:
 

@@ -222,6 +222,44 @@ This project demonstrates:
 
 Production improvements would include Step Functions or Airflow orchestration, CI/CD, Iceberg tables, automated data quality checks, structured logging, monitoring, and audit/reject tables.
 
+## Project Screenshots
+
+### Terraform Infrastructure Deployment
+
+![Terraform deployment showing AWS infrastructure provisioning](screenshots/01_terraform_deployment.png)
+
+This screenshot demonstrates the Terraform workflow used to provision the AWS data platform. It shows that the infrastructure can be deployed repeatably through code instead of relying on manual AWS console configuration.
+
+### AWS Glue Jobs Overview
+
+![AWS Glue jobs overview for the NYC Taxi pipeline](screenshots/02_glue_jobs_overview.png)
+
+This view highlights the AWS Glue jobs that run the PySpark ETL pipeline. It demonstrates the managed batch processing layer responsible for moving data through the Bronze, Silver, Gold, and Star Schema stages.
+
+### S3 Data Lake Structure
+
+![S3 data lake folder structure for Bronze, Silver, Gold, and Star Schema data](screenshots/03_s3_data_lake_structure.png)
+
+This screenshot shows the S3 layout used for the lakehouse. The folder structure separates raw, cleansed, aggregated, and dimensional data so the pipeline remains easy to validate, operate, and explain in technical interviews.
+
+### Star Schema Validation
+
+![Star Schema validation query results](screenshots/04_star_schema_validation.png)
+
+This validation view confirms that the curated pipeline output supports an analytics-ready dimensional model. The Star Schema design makes the project relevant to data warehouse use cases and business intelligence workloads.
+
+### Gold Vendor Revenue Analysis
+
+![Gold layer vendor revenue analysis in Athena](screenshots/05_gold_vendor_revenue_analysis.png)
+
+This screenshot connects the Gold layer to a business-facing analytical question: vendor revenue performance. It demonstrates how Athena can query curated S3 data directly for KPI-style analysis without a separate database server.
+
+### Project Code Structure
+
+![Project code structure for Terraform and Glue jobs](screenshots/06_project_code_structure.png)
+
+This screenshot shows the project organization across ingestion code, Glue jobs, SQL, tests, documentation, and Terraform. A clean repository structure helps recruiters and technical hiring managers quickly understand the engineering scope and maintainability of the project.
+
 ## Tests
 
 Install local test dependencies:

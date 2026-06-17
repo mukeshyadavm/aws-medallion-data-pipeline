@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "glue_assume_role" {
 }
 
 resource "aws_iam_role" "glue_service_role" {
-  name               = "${var.project_name}-glue-role"
+  name = "Glue-Access-S3"
   assume_role_policy = data.aws_iam_policy_document.glue_assume_role.json
 }
 

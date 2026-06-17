@@ -1,10 +1,10 @@
 locals {
-  bronze_path       = "s3://${aws_s3_bucket.data_lake.bucket}/Bronze/yellow_tripdata/"
-  silver_path       = "s3://${aws_s3_bucket.data_lake.bucket}/Silver/yellow_tripdata/"
-  gold_path         = "s3://${aws_s3_bucket.data_lake.bucket}/Gold/"
-  star_schema_path  = "s3://${aws_s3_bucket.data_lake.bucket}/StarSchema"
-  glue_temp_path    = "s3://${aws_s3_bucket.data_lake.bucket}/temp/glue/"
-  athena_results    = "s3://${aws_s3_bucket.data_lake.bucket}/athena-results/"
+  bronze_path      = "s3://${aws_s3_bucket.data_lake.bucket}/Bronze/yellow_tripdata/"
+  silver_path      = "s3://${aws_s3_bucket.data_lake.bucket}/Silver/yellow_tripdata/"
+  gold_path        = "s3://${aws_s3_bucket.data_lake.bucket}/Gold/"
+  star_schema_path = "s3://${aws_s3_bucket.data_lake.bucket}/StarSchema"
+  glue_temp_path   = "s3://${aws_s3_bucket.data_lake.bucket}/temp/glue/"
+  athena_results   = "s3://${aws_s3_bucket.data_lake.bucket}/athena-results/"
 }
 
 resource "aws_s3_bucket" "data_lake" {
@@ -42,6 +42,27 @@ resource "aws_s3_bucket_versioning" "data_lake" {
   }
 }
 
+resource "aws_s3_object" "bronze_to_silver_script" {
+  bucket = aws_s3_bucket.data_lake.id
+  key    = var.bronze_to_silver_script_key
+  source = "${path.module}/../../glue_jobs/bronze_to_silver_glue.py"
+  etag   = filemd5("${path.module}/../../glue_jobs/bronze_to_silver_glue.py")
+}
+
+resource "aws_s3_object" "silver_to_gold_script" {
+  bucket = aws_s3_bucket.data_lake.id
+  key    = var.silver_to_gold_script_key
+  source = "${path.module}/../../glue_jobs/silver_to_gold_aggregates_glue.py"
+  etag   = filemd5("${path.module}/../../glue_jobs/silver_to_gold_aggregates_glue.py")
+}
+
+resource "aws_s3_object" "star_schema_script" {
+  bucket = aws_s3_bucket.data_lake.id
+  key    = var.star_schema_script_key
+  source = "${path.module}/../../glue_jobs/nyc_taxi_star_schema_glue.py"
+  etag   = filemd5("${path.module}/../../glue_jobs/nyc_taxi_star_schema_glue.py")
+}
+
 resource "aws_glue_catalog_database" "nyc_taxi" {
   name = var.glue_database_name
 }
@@ -58,7 +79,7 @@ data "aws_iam_policy_document" "glue_assume_role" {
 }
 
 resource "aws_iam_role" "glue_service_role" {
-  name = "Glue-Access-S3"
+  name               = "Glue-Access-S3"
   assume_role_policy = data.aws_iam_policy_document.glue_assume_role.json
 }
 
@@ -144,7 +165,10 @@ resource "aws_glue_job" "bronze_to_silver" {
     "--enable-continuous-cloudwatch-log" = "true"
   }
 
-  depends_on = [aws_iam_role_policy_attachment.glue_permissions]
+  depends_on = [
+    aws_iam_role_policy_attachment.glue_permissions,
+    aws_s3_object.bronze_to_silver_script
+  ]
 }
 
 resource "aws_glue_job" "silver_to_gold_aggregates" {
@@ -169,7 +193,10 @@ resource "aws_glue_job" "silver_to_gold_aggregates" {
     "--enable-continuous-cloudwatch-log" = "true"
   }
 
-  depends_on = [aws_iam_role_policy_attachment.glue_permissions]
+  depends_on = [
+    aws_iam_role_policy_attachment.glue_permissions,
+    aws_s3_object.silver_to_gold_script
+  ]
 }
 
 resource "aws_glue_job" "star_schema" {
@@ -199,7 +226,8 @@ resource "aws_glue_job" "star_schema" {
 
   depends_on = [
     aws_glue_catalog_database.nyc_taxi,
-    aws_iam_role_policy_attachment.glue_permissions
+    aws_iam_role_policy_attachment.glue_permissions,
+    aws_s3_object.star_schema_script
   ]
 }
 

@@ -24,7 +24,7 @@ variable "glue_database_name" {
 variable "glue_version" {
   description = "AWS Glue runtime version."
   type        = string
-  default     = "4.0"
+  default     = "5.1"
 }
 
 variable "worker_type" {
